@@ -17,20 +17,16 @@ controller.read = (req, res) => {
 controller.write = (req, res) => {
   console.log(req.body);
   fs.readFile(testFile, (err, data) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send('Error al leer el archivo');
-    }
+    if (err) return res.status(500).send('Error al leer el archivo');
+
     const jsonData = JSON.parse(data);
 
-    const newInfo = { ...jsonData, active: true };
+    const newInfo = req.body;
 
     fs.writeFile(testFile, JSON.stringify(newInfo), err => {
-      if (err) {
-        console.log(err);
-        return res.status(500).send('Error al guardar el archivo');
-      }
-      res.send(newInfo);
+      if (err) return res.status(500).send('Error al guardar el archivo');
+
+      res.end();
     });
   });
 };
