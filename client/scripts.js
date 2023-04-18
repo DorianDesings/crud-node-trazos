@@ -13,7 +13,9 @@ const handleSubmit = e => {
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }
-  });
+  })
+    .then(response => response.json())
+    .then(data => console.log(data));
 };
 
 formElement.addEventListener('submit', handleSubmit);

@@ -19,14 +19,12 @@ controller.write = (req, res) => {
   fs.readFile(testFile, (err, data) => {
     if (err) return res.status(500).send('Error al leer el archivo');
 
-    const jsonData = JSON.parse(data);
-
     const newInfo = req.body;
 
     fs.writeFile(testFile, JSON.stringify(newInfo), err => {
       if (err) return res.status(500).send('Error al guardar el archivo');
 
-      res.end();
+      res.send({ hola: 'TODO OK' });
     });
   });
 };
