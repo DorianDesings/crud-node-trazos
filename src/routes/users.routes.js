@@ -4,32 +4,12 @@ const controller = require('../controllers/users.controller');
 
 // Obtener todos los usuarios
 userRoutes.get('/', controller.allUsers);
+
 // Obtener un usuario por ID
 userRoutes.get('/:id', controller.userById);
 
 // Crear un usuario
-// app.post('/api/users', (req, res) => {
-//   fs.readFile(usersFile, 'utf8', (err, data) => {
-//     if (err) {
-//       console.log(err);
-//       return res.status(500).send('Error al leer el archivo de usuarios');
-//     }
-//     const users = JSON.parse(data);
-//     const newUser = {
-//       id: usuarios.length + 1,
-//       name: req.body.name,
-//       email: req.body.email
-//     };
-//     users.push(newUser);
-//     fs.writeFile(usersFile, JSON.stringify(users), err => {
-//       if (err) {
-//         console.log(err);
-//         return res.status(500).send('Error al guardar el archivo de usuarios');
-//       }
-//       res.send(newUser);
-//     });
-//   });
-// });
+userRoutes.post('/', controller.createUser);
 
 // Actualizar un usuario
 // app.put('/api/users/:id', (req, res) => {
