@@ -10,6 +10,7 @@ controller.allUsers = (req, res) => {
   fs.readFile(usersFile, (err, data) => {
     if (err) {
       console.log(err);
+
       return res.status(500).send('Error al leer el archivo de usuarios');
     }
     res.send(JSON.parse(data));

@@ -7,6 +7,7 @@ const userRoutes = require('./routes/users.routes');
 
 // Middlewares para cliente
 app.use(cors());
+
 app.use(express.json());
 
 // Uso de rutas

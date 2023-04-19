@@ -12,7 +12,7 @@ userRoutes.get('/:id', controller.userById);
 userRoutes.post('/', controller.createUser);
 
 // Actualizar un usuario
-// app.put('/api/users/:id', (req, res) => {
+// app.patch('/api/users/:id', (req, res) => {
 //   fs.readFile(usersFile, 'utf8', (err, data) => {
 //     if (err) {
 //       console.log(err);
