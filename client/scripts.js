@@ -5,11 +5,14 @@ const usersElement = document.getElementById('users');
 let currentUserId;
 
 const fetchData = async (url, ...options) => {
-  console.log(url);
-  const request = await fetch(url, ...options);
-  const data = await request.json();
-  console.log(data);
-  return data;
+  try {
+    const request = await fetch(url, ...options);
+    const data = await request.json();
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const printUsers = users => {
@@ -22,6 +25,7 @@ const printUsers = users => {
     userContainer.append(name);
     const detailsButton = document.createElement('button');
     detailsButton.dataset.type = 'details';
+    detailsButton.dataset.id = user.userId;
     userContainer.append(detailsButton);
     detailsButton.textContent = 'DETAILS';
     const editButton = document.createElement('button');
@@ -48,14 +52,14 @@ const getAllUsers = async () => {
   printUsers(allUsers);
 };
 
-const handleCreateUser = e => {
+const handleCreateUser = async e => {
   e.preventDefault();
   const name = e.target.name.value;
   const email = e.target.email.value;
 
   const data = { name: name, email: email };
 
-  fetchData('http://127.0.0.1:3000/api/users', {
+  const response = await fetchData('http://127.0.0.1:3000/api/users', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -63,9 +67,11 @@ const handleCreateUser = e => {
       'Content-Type': 'application/json'
     }
   });
+
+  if (response.message) location.reload();
 };
 
-const handleEditUser = e => {
+const handleEditUser = async e => {
   e.preventDefault();
 
   if (!currentUserId) return;
@@ -75,38 +81,46 @@ const handleEditUser = e => {
 
   const data = { name: name, email: email };
 
-  fetchData(`http://127.0.0.1:3000/api/users/${currentUserId}`, {
-    method: 'PATCH',
-    body: JSON.stringify(data),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+  const response = await fetchData(
+    `http://127.0.0.1:3000/api/users/${currentUserId}`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
     }
-  });
+  );
+  if (response.message) location.reload();
 };
 
 const fillDataFormEdit = data => {
   const { id, name, email } = data;
 
   currentUserId = id;
-  console.log(currentUserId);
 
   formEditElement.name.value = name;
   formEditElement.email.value = email;
 };
 
-const showUserDetails = id => {};
+const showUserDetails = async id => {
+  await fetchData(`http://127.0.0.1:3000/api/users/${id}`);
+};
 
 const deleteUser = async id => {
   currentUserId = id;
 
   if (!currentUserId) return;
 
-  fetchData(`http://127.0.0.1:3000/api/users/${currentUserId}`, {
-    method: 'DELETE'
-  });
+  const response = await fetchData(
+    `http://127.0.0.1:3000/api/users/${currentUserId}`,
+    {
+      method: 'DELETE'
+    }
+  );
 
-  location.reload();
+  if (response.message) location.reload();
 };
 
 getAllUsers();

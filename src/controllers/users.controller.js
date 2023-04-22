@@ -5,8 +5,6 @@ const usersFile = path.resolve(__dirname, '../../data/users.json');
 
 const controller = {};
 
-const getUsers = () => {};
-
 // Obtener todos los usuarios
 controller.allUsers = (req, res) => {
   fs.readFile(usersFile, (err, data) => {
@@ -74,7 +72,9 @@ controller.createUser = (req, res) => {
 controller.updateUser = (req, res) => {
   fs.readFile(usersFile, (err, data) => {
     if (err)
-      return res.status(500).send('Error al leer el archivo de usuarios');
+      return res
+        .status(500)
+        .send({ error: 'Error al leer el archivo de usuarios' });
 
     const users = JSON.parse(data);
 
@@ -87,7 +87,9 @@ controller.updateUser = (req, res) => {
 
     fs.writeFile(usersFile, JSON.stringify(users), err => {
       if (err) {
-        return res.status(500).send('Error al guardar el archivo de usuarios');
+        return res
+          .status(500)
+          .send({ error: 'Error al guardar el archivo de usuarios' });
       }
       res.send({ message: 'Usuario actualizado correctamente', user });
     });
@@ -95,12 +97,13 @@ controller.updateUser = (req, res) => {
 };
 
 controller.deleteUser = (req, res) => {
-  console.log('hola');
   fs.readFile(usersFile, (err, data) => {
     if (err) {
       console.log(err);
 
-      return res.status(500).send('Error al leer el archivo de usuarios');
+      return res
+        .status(500)
+        .send({ error: 'Error al leer el archivo de usuarios' });
     }
 
     let users = JSON.parse(data);
@@ -115,7 +118,9 @@ controller.deleteUser = (req, res) => {
       if (err) {
         console.log(err);
 
-        return res.status(500).send('Error al guardar el archivo de usuarios');
+        return res
+          .status(500)
+          .send({ error: 'Error al guardar el archivo de usuarios' });
       }
 
       res
