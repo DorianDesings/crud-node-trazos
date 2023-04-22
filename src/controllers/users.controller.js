@@ -5,14 +5,16 @@ const usersFile = path.resolve(__dirname, '../../data/users.json');
 
 const controller = {};
 
+const getUsers = () => {};
+
 // Obtener todos los usuarios
 controller.allUsers = (req, res) => {
   fs.readFile(usersFile, (err, data) => {
-    if (err) {
-      console.log(err);
+    if (err)
+      return res
+        .status(500)
+        .send({ error: 'Error al leer el archivo de usuarios' });
 
-      return res.status(500).send('Error al leer el archivo de usuarios');
-    }
     res.send(JSON.parse(data));
   });
 };
@@ -20,13 +22,15 @@ controller.allUsers = (req, res) => {
 // Obtener un usuario por id
 controller.userById = (req, res) => {
   fs.readFile(usersFile, 'utf8', (err, data) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send('Error al leer el archivo de usuarios');
-    }
+    if (err)
+      return res
+        .status(500)
+        .send({ error: 'Error al leer el archivo de usuarios' });
+
     const users = JSON.parse(data);
     const user = users.find(user => user.userId === req.params.id);
-    if (!user) return res.status(404).send('Usuario no encontrado');
+
+    if (!user) return res.status(404).send({ error: 'Usuario no encontrado' });
     res.send(user);
   });
 };
@@ -35,17 +39,21 @@ controller.userById = (req, res) => {
 controller.createUser = (req, res) => {
   fs.readFile(usersFile, (err, data) => {
     if (err)
-      return res.status(500).send('Error al leer el archivo de usuarios');
+      return res
+        .status(500)
+        .send({ error: 'Error al leer el archivo de usuarios' });
 
     const users = JSON.parse(data);
 
     const userExist = users.some(user => user.email === req.body.email);
 
     if (userExist)
-      return res.status(409).send('Ya existe un usuario con ese email');
+      return res
+        .status(409)
+        .send({ error: 'Ya existe un usuario con ese email' });
 
     const newUser = {
-      id: v4(),
+      userId: v4(),
       name: req.body.name,
       email: req.body.email
     };
@@ -54,9 +62,65 @@ controller.createUser = (req, res) => {
 
     fs.writeFile(usersFile, JSON.stringify(users), err => {
       if (err)
-        return res.status(500).send('Error al guardar el archivo de usuarios');
+        return res
+          .status(500)
+          .send({ error: 'Error al guardar el archivo de usuarios' });
 
-      res.send('Nuevo usuario creado');
+      res.send({ message: 'Nuevo usuario creado' });
+    });
+  });
+};
+
+controller.updateUser = (req, res) => {
+  fs.readFile(usersFile, (err, data) => {
+    if (err)
+      return res.status(500).send('Error al leer el archivo de usuarios');
+
+    const users = JSON.parse(data);
+
+    const user = users.find(user => user.userId === req.params.id);
+
+    if (!user) res.status(404).send({ error: 'Usuario no encontrado' });
+
+    user.name = req.body.name;
+    user.email = req.body.email;
+
+    fs.writeFile(usersFile, JSON.stringify(users), err => {
+      if (err) {
+        return res.status(500).send('Error al guardar el archivo de usuarios');
+      }
+      res.send({ message: 'Usuario actualizado correctamente', user });
+    });
+  });
+};
+
+controller.deleteUser = (req, res) => {
+  console.log('hola');
+  fs.readFile(usersFile, (err, data) => {
+    if (err) {
+      console.log(err);
+
+      return res.status(500).send('Error al leer el archivo de usuarios');
+    }
+
+    let users = JSON.parse(data);
+
+    const userIndex = users.findIndex(user => user.userId === req.params.id);
+
+    if (userIndex === -1) return res.status(404).send('Usuario no encontrado');
+
+    users.splice(userIndex, 1);
+
+    fs.writeFile(usersFile, JSON.stringify(users), err => {
+      if (err) {
+        console.log(err);
+
+        return res.status(500).send('Error al guardar el archivo de usuarios');
+      }
+
+      res
+        .status(200)
+        .send({ message: `Usuario con ID ${req.params.id} eliminado` });
     });
   });
 };
