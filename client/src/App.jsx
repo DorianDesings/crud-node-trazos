@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react';
-import CreateUser from './components/CreateUser/CreateUser';
+import EditUser from './components/EditUser/EditUser';
 import Users from './components/Users/Users';
+import CreateUser from './components/createUser/CreateUser';
 import { GlobalStyles } from './styles/GlobalStyles';
 
 const App = () => {
+	const [isEditing, setIsEditing] = useState(false);
+	const [userToEdit, setUserToEdit] = useState({
+		id: '',
+		name: '',
+		email: ''
+	});
 	const [users, setUsers] = useState([]);
 	useEffect(() => {
 		getAllUsers(setUsers);
@@ -11,8 +18,23 @@ const App = () => {
 	return (
 		<>
 			<GlobalStyles />
-			<CreateUser setUsers={setUsers} />
-			<Users users={users} setUsers={setUsers} />
+			{isEditing ? (
+				<EditUser
+					setUsers={setUsers}
+					userToEdit={userToEdit}
+					setUserToEdit={setUserToEdit}
+					setIsEditing={setIsEditing}
+				/>
+			) : (
+				<CreateUser setUsers={setUsers} />
+			)}
+
+			<Users
+				users={users}
+				setUsers={setUsers}
+				setIsEditing={setIsEditing}
+				setUserToEdit={setUserToEdit}
+			/>
 		</>
 	);
 };

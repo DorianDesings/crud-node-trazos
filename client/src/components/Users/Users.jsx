@@ -1,4 +1,4 @@
-const Users = ({ users, setUsers }) => {
+const Users = ({ users, setUsers, setIsEditing, setUserToEdit }) => {
 	if (users.length === 0) return <h1>No hay usuarios</h1>;
 
 	return (
@@ -9,6 +9,14 @@ const Users = ({ users, setUsers }) => {
 					<p>{user.email}</p>
 					<button onClick={() => deleteUser(user.userId, setUsers)}>
 						Borrar
+					</button>
+					<button
+						onClick={() => {
+							setIsEditing(true);
+							setUserToEdit(user);
+						}}
+					>
+						Editar
 					</button>
 				</div>
 			))}

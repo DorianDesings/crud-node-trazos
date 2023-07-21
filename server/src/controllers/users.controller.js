@@ -73,7 +73,7 @@ controller.updateUser = (req, res) => {
       if (err) {
         return res.status(500).send({ error: 'Error al guardar el archivo de usuarios' });
       }
-      res.send({ message: 'Usuario actualizado correctamente', user });
+      res.send(users);
     });
   });
 };

@@ -8,6 +8,7 @@ const CreateUser = ({ setUsers }) => {
 
 	return (
 		<form onSubmit={e => handleSubmit(e, userData, setUsers)}>
+			<h2>CREAR USUARIO</h2>
 			<div>
 				<label htmlFor='name'>Name</label>
 				<input
