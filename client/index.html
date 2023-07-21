@@ -1,48 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-
-    <style>
-      body {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-      }
-    </style>
-  </head>
-  <body>
-    <div id="users">
-      <h2>ALL USERS</h2>
-    </div>
-    <form id="form-create">
-      <h2>NEW USER</h2>
-      <div>
-        <label for="name">Name</label>
-        <input id="name" type="name" name="name" />
-      </div>
-      <div>
-        <label for="email">Email</label>
-        <input id="email" type="name" name="email" />
-      </div>
-      <input type="submit" value="Enviar" />
-    </form>
-
-    <form id="form-edit">
-      <h2>EDIT USER</h2>
-      <div>
-        <label for="name">Name</label>
-        <input id="name" type="name" name="name" />
-      </div>
-      <div>
-        <label for="email">Email</label>
-        <input id="email" type="name" name="email" />
-      </div>
-      <input type="submit" value="Enviar" />
-    </form>
-
-    <script src="scripts.js"></script>
-  </body>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Vite App</title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module" src="/src/main.jsx"></script>
+	</body>
 </html>
